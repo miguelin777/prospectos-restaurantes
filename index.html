@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Prospectos · Restaurantes sin web</title>
+</head>
+<body>
+<title>Prospectos · Restaurantes sin web</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ground:#EDEFF3; --card:#FFFFFF; --ink:#141A22; --muted:#5A6472;
+    --line:#E3E6EC; --rosa:#E11463; --rosa-d:#AE0E4D; --rosa-wash:#FCE7F0;
+    --verde:#1B9E57; --verde-d:#157A43; --ambar:#B8790C; --slate:#7A828E; --teal:#0E7C86;
+    --alta-bg:#E4F5EC; --alta-fg:#157A43;
+    --media-bg:#FBEED6; --media-fg:#9A6208;
+    --baja-bg:#ECEEF1; --baja-fg:#697180;
+    --sh:0 1px 2px rgba(20,26,34,.06),0 4px 14px rgba(20,26,34,.05);
+    --font:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--font);background:var(--ground);color:var(--ink);line-height:1.5;
+    background-image:radial-gradient(circle at 1px 1px,rgba(20,26,34,.045) 1px,transparent 0);background-size:22px 22px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+
+  /* ---- Encabezado ---- */
+  header{background:var(--ink);color:#fff;border-bottom:3px solid var(--rosa);position:sticky;top:0;z-index:20}
+  .head{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;padding:16px 0 14px}
+  .brand{display:flex;align-items:baseline;gap:10px;margin-right:auto}
+  .brand h1{font-size:20px;font-weight:800;letter-spacing:-.02em}
+  .brand .tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#F5A9C9}
+  .stats{display:flex;gap:8px}
+  .stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:10px;
+    padding:7px 13px;text-align:center;min-width:64px}
+  .stat b{display:block;font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+  .stat span{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#AEB6C2}
+  .stat.on b{color:#7CE0A8}
+  .bar{height:5px;background:rgba(255,255,255,.12)}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rosa),#F6689E);width:0;transition:width .4s ease}
+
+  /* ---- Aviso honesto ---- */
+  .note{background:var(--rosa-wash);border-bottom:1px solid #F4C9DC;color:#7A0D3B;font-size:13px;font-weight:600}
+  .note .wrap{padding:9px 18px;display:flex;gap:8px;align-items:center}
+
+  /* ---- Filtros ---- */
+  .filters{position:sticky;top:57px;z-index:15;background:rgba(237,239,243,.94);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line)}
+  .filters .wrap{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;padding:12px 18px}
+  .search{flex:1;min-width:190px;display:flex;align-items:center;gap:8px;background:var(--card);
+    border:1.5px solid var(--line);border-radius:10px;padding:9px 12px}
+  .search input{border:0;outline:0;font:inherit;width:100%;background:none;color:var(--ink)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{cursor:pointer;font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);
+    background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:6px 13px;
+    transition:.15s;white-space:nowrap}
+  .chip:hover{border-color:var(--rosa);color:var(--rosa)}
+  .chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .chip.on.c-alta{background:var(--alta-fg);border-color:var(--alta-fg)}
+  .toggle{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--muted)}
+  .toggle input{width:38px;height:22px;appearance:none;background:var(--line);border-radius:20px;position:relative;cursor:pointer;transition:.2s;flex:none}
+  .toggle input:checked{background:var(--verde)}
+  .toggle input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+  .toggle input:checked::after{left:18px}
+
+  /* ---- Rejilla ---- */
+  main .wrap{padding:20px 18px 60px}
+  .empty{display:none;text-align:center;color:var(--muted);padding:60px 20px;font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh);
+    padding:16px 16px 14px;display:flex;flex-direction:column;gap:9px;transition:.18s}
+  .card:hover{box-shadow:0 2px 6px rgba(20,26,34,.08),0 10px 26px rgba(20,26,34,.09);transform:translateY(-2px)}
+  .card.is-done{opacity:.5;filter:saturate(.4)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .name{font-size:16.5px;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+  .pill{flex:none;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+    padding:4px 9px;border-radius:20px}
+  .pill.alta{background:var(--alta-bg);color:var(--alta-fg)}
+  .pill.media{background:var(--media-bg);color:var(--media-fg)}
+  .pill.baja{background:var(--baja-bg);color:var(--baja-fg)}
+  .meta{font-size:12.5px;font-weight:700;color:var(--ink)}
+  .meta .dot{color:var(--rosa);margin:0 5px}
+  .giro{color:var(--muted);font-weight:600}
+  .why{font-size:12.5px;color:var(--muted);line-height:1.45}
+  .web{align-self:flex-start;font-size:10.5px;font-weight:700;color:var(--teal);
+    background:#E2F1F2;border-radius:6px;padding:3px 8px;letter-spacing:.02em}
+  .web.partial{color:var(--ambar);background:var(--media-bg)}
+  .acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px}
+  .act{cursor:pointer;font:inherit;font-size:12px;font-weight:700;text-decoration:none;
+    border-radius:9px;padding:8px 11px;display:inline-flex;align-items:center;gap:5px;
+    border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:.15s}
+  .act:hover{transform:translateY(-1px)}
+  .act.wa{background:var(--verde);border-color:var(--verde);color:#fff}
+  .act.wa:hover{background:var(--verde-d)}
+  .act.call{border-color:#CDD3DB}
+  .act.copy{border-color:var(--rosa);color:var(--rosa)}
+  .act.copy:hover{background:var(--rosa-wash)}
+  .act.soc{color:var(--teal);border-color:#C9E4E7}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;
+    margin-top:6px;padding-top:10px;border-top:1px dashed var(--line)}
+  .done{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--muted)}
+  .done input{width:18px;height:18px;accent-color:var(--verde);cursor:pointer}
+  .src{font-size:10.5px;color:#9AA1AB;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
+  .src:hover{color:var(--rosa)}
+
+  /* ---- Toast ---- */
+  #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+    background:var(--ink);color:#fff;font-weight:700;font-size:13.5px;padding:11px 20px;border-radius:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,.25);transition:.25s;z-index:40}
+  #toast.on{opacity:1;transform:translate(-50%,0)}
+
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+  footer .wrap{padding:20px 18px 40px;display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media(max-width:560px){.brand{margin-right:0;width:100%}.stats{width:100%;justify-content:space-between}.stat{flex:1}}
+</style>
+
+<header>
+  <div class="wrap head">
+    <div class="brand">
+      <h1>Prospectos · restaurantes sin web</h1>
+      <span class="tag">Bajío + centro</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="s-total">0</b><span>Total</span></div>
+      <div class="stat"><b id="s-todo">0</b><span>Por contactar</span></div>
+      <div class="stat on"><b id="s-done">0</b><span>Contactados</span></div>
+    </div>
+  </div>
+  <div class="bar"><i id="prog"></i></div>
+</header>
+
+<div class="note"><div class="wrap">⚠️ Antes de escribir: entra a su Facebook/Instagram y confirma que publicaron en las últimas 2-4 semanas. Perfil muerto = mal prospecto aunque diga "alta".</div></div>
+
+<div class="filters">
+  <div class="wrap">
+    <label class="search">🔍 <input id="q" type="search" placeholder="Buscar negocio, ciudad o platillo…" autocomplete="off"></label>
+    <div class="chips" id="ciudades"></div>
+    <div class="chips" id="confs">
+      <button class="chip c-alta" data-conf="alta">Alta</button>
+      <button class="chip" data-conf="media">Media</button>
+      <button class="chip" data-conf="baja">Baja</button>
+    </div>
+    <label class="toggle"><input type="checkbox" id="hideDone"> Ocultar contactados</label>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty">Nada coincide con el filtro. Prueba con otra ciudad o borra la búsqueda.</div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>33 prospectos verificados · comida de rancho / mariscos / carnitas / birria · generado con búsqueda web (jul 2026).</span>
+    <span>El estado "contactado" se guarda en este navegador.</span>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+const DATA = [{"nombre":"El Cabrito (Restaurant Bar El Cabrito)","ciudad":"Cortázar, Guanajuato","giro":"Cabrito y cocina tradicional (restaurante-bar)","why":"Es tu ciudad: puedes ir CAMINANDO. Más de 60 años de tradición, ~4.4/5 en Restaurant Guru, presencia en FB, IG, Yelp y Tripadvisor. Negocio establecido con reputación y flujo real de clientes, sin sitio propio. La antigüedad ayuda: les puedes vender el sitio como 'ya son un ícono, que su web esté a la altura'.","web":"SIN WEB (solo redes)","conf":"alta","tel":"4111550125","fb":"facebook.com/ElCabritoRestaurantBar","ig":"cabritorest.corta","tiktok":"","platillo":"su cabrito","fuente":"facebook.com/ElCabritoRestaurantBar","waText":"¡Qué tal, El Cabrito! 🙌 Soy Miguel, de aquí de la región. Soy fan de su cabrito y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de El Cabrito para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Mariscos los Pulpos Restaurante","ciudad":"Cortázar, Guanajuato","giro":"Mariscos (marisquería) y carnes","why":"También en Cortázar, sobre el Blvd. Paseo de la Juventud: visita en persona directa. FB e IG activos, teléfono y correo visibles. Mariscos es un giro muy 'fotografiable' que se vende por antojo; un sitio con menú y galería le luce. Contacto directísimo.","web":"SIN WEB (solo redes)","conf":"media","tel":"4111553717","fb":"facebook.com/p/Mariscos-los-Pulpos-Restaurante-100067936929910","ig":"","tiktok":"","platillo":"sus mariscos","fuente":"facebook.com/p/Mariscos-los-Pulpos-Restaurante-100067936929910","waText":"¡Qué tal, Mariscos los Pulpos Restaurante! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Mariscos los Pulpos Restaurante para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Marisqueando Restaurant Bar ('La Cajeta de los Mariscos')","ciudad":"Celaya, Guanajuato","giro":"Mariscos frescos, restaurante-bar con mixología y música en vivo","why":"De los MÁS activos en redes de toda la lista: Instagram @marisqueando_celaya con ~2,353 seguidores y reels frecuentes, FB propio y delivery por Rappi. Ya invierten en contenido y marca cuidada, solo les falta el sitio para cerrar reservas y menú. Celaya está a 20 min de Cortázar: visita fácil. Cliente que YA entiende marketing = venta más rápida.","web":"SIN WEB (solo redes)","conf":"alta","tel":"4611512030","fb":"facebook.com/MarisqueandoCelaya","ig":"marisqueando_celaya","tiktok":"","platillo":"sus mariscos","fuente":"instagram.com/marisqueando_celaya","waText":"¡Qué tal, Marisqueando Restaurant Bar! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Marisqueando Restaurant Bar para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Mariscos Los Esteros","ciudad":"Celaya, Guanajuato","giro":"Marisquería / restaurante-bar de mariscos","why":"Establecido, con reseñas positivas (limpieza, buena atención, precios accesibles) y presencia en muchos directorios. Teléfono y dirección visibles = muy accionable. Celaya, cerca para ir en persona. Un sitio con menú, fotos y botón de WhatsApp encaja perfecto.","web":"SIN WEB (solo redes)","conf":"media","tel":"4616120850","fb":"facebook.com/LosEsterosMariscos","ig":"","tiktok":"","platillo":"sus mariscos","fuente":"guiatel.com.mx/empresas/mariscos-los-esteros-celaya-guanajuato","waText":"¡Qué tal, Mariscos Los Esteros! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Mariscos Los Esteros para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"La Paisa Birria de Res","ciudad":"Salamanca, Guanajuato","giro":"Birria de res estilo paisa / quesabirria","why":"Negocio JOVEN y entrado de lleno a redes: FB ~3,142 likes, ~3,878 hablando de esto, más Instagram y TikTok con contenido promocional. Se posiciona como 'La Mejor Birria de Salamanca'. Perfil ideal: ya creen en marketing digital, les falta el sitio propio. Salamanca está a ~40 min. Dueño joven suele decir 'sí' más rápido.","web":"SIN WEB (solo redes)","conf":"alta","tel":"4641023622","fb":"facebook.com/p/La-Paisa-Birria-de-Res-61580626307737","ig":"lapaisabirriaderes","tiktok":"lapaisabirriaderes","platillo":"su birria","fuente":"facebook.com/p/La-Paisa-Birria-de-Res-61580626307737","waText":"¡Qué tal, La Paisa Birria de Res! 🙌 Soy Miguel, de aquí de la región. Soy fan de su birria y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de La Paisa Birria de Res para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas El Queretanito","ciudad":"Santiago de Querétaro, Querétaro","giro":"Carnitas (comida tradicional de rancho)","why":"Institución: +48 años en el Mercado Escobedo, tan popular que algunos días se agota antes de las 3 pm. Cubierto por prensa (El Universal Qro, EstadoLuz, Gastrolab) y con redes fuertes. Prospecto ideal: tradicional, muy popular, sin web. Querétaro está a ~1 hora, alcanzable para visita. La cobertura de prensa te da un gancho: 'ya salieron en el periódico, que tengan web'.","web":"SIN WEB (solo redes)","conf":"alta","tel":"4422864656","fb":"facebook.com/p/Carnitas-El-Queretanito-61550129314326","ig":"carnitaselqueretanito","tiktok":"","platillo":"sus carnitas","fuente":"estadoluz.com/2025/02/17/las-mejores-carnitas-de-queretaro-el-queretanito","waText":"¡Qué tal, Carnitas El Queretanito! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas El Queretanito para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas Arreola","ciudad":"Santiago de Querétaro, Querétaro","giro":"Carnitas estilo Querétaro (tradición desde 1940), tacos y gorditas","why":"Institución local con enorme tráfico: 4.2 estrellas con 1,414 reseñas en Google. Negocio de barrio muy popular, perfil tradicional/de rancho. Contacto claro con teléfono. Querétaro a ~1 hora. El volumen de reseñas confirma que le entra muchísima gente.","web":"SIN WEB (solo redes)","conf":"alta","tel":"4423840310","fb":"facebook.com/carnitasarreolaqro","ig":"","tiktok":"","platillo":"sus carnitas","fuente":"restaurantguru.com/Carnitas-Arreola-Santiago-de-Queretaro","waText":"¡Qué tal, Carnitas Arreola! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas Arreola para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas Don Poncho","ciudad":"León, Guanajuato","giro":"Carnitas estilo Guanajuato con tortillas de maíz negro hechas a mano; menudo","why":"Muy popular y con contenido viral PROPIO: TikTok @carnitas.donponcho con videos de decenas/cientos de miles de vistas, FB activo, 4.4/5 con 621 reseñas en Google, varias sucursales. Ya hacen marketing en TikTok = les vendes el sitio como el siguiente paso natural. León a ~1.5 h. OJO: no confundir con la cadena aparte 'Carnitas Poncho Sapal', es otro negocio.","web":"SIN WEB (solo redes)","conf":"alta","tel":"4775507096","fb":"facebook.com/CarnitasEnLeonGuanajuatoDonPoncho","ig":"","tiktok":"carnitas.donponcho","platillo":"sus carnitas","fuente":"facebook.com/CarnitasEnLeonGuanajuatoDonPoncho","waText":"¡Qué tal, Carnitas Don Poncho! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas Don Poncho para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas y Ahogadas OINC","ciudad":"León, Guanajuato","giro":"Carnitas estilo Michoacán y tortas ahogadas estilo Jalisco (birote salado)","why":"Muy activo: ~2,058 likes en FB, 401 check-ins, Instagram propio y presencia fuerte en DiDi Food y Uber Eats. Concepto local reconocido con buen flujo. Ya invierten en apps de delivery = entienden el valor de estar en línea. León a ~1.5 h.","web":"SIN WEB (solo redes)","conf":"alta","tel":"4772895991","fb":"","ig":"carnitas.oinc","tiktok":"","platillo":"sus carnitas","fuente":"facebook.com/CarnitasOinc","waText":"¡Qué tal, Carnitas y Ahogadas OINC! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas y Ahogadas OINC para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Enchiladas Mineras 'Doña Lupe'","ciudad":"Guanajuato capital, Guanajuato","giro":"Enchiladas mineras tradicionales (platillo típico de Guanajuato)","why":"Ícono de cocina tradicional: premiada como 'Lo mejor de Guanajuato' por México Desconocido, 4.9/5 en Tripadvisor (#39 de 261), buenas reseñas en Yelp. Zona centro con mucho turismo (cerca del Callejón del Beso). El turismo es clave: una web con menú, historia e inglés le trae clientes que buscan en Google antes de ir. Gancho fuerte para vender.","web":"SIN WEB (solo redes)","conf":"alta","tel":"","fb":"facebook.com/p/Enchiladas-Mineras-DOÑA-LUPE-100064800245517","ig":"","tiktok":"","platillo":"sus enchiladas mineras","fuente":"facebook.com/p/Enchiladas-Mineras-DONA-LUPE-100064800245517","waText":"¡Qué tal, Enchiladas Mineras Doña Lupe! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus enchiladas mineras y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Enchiladas Mineras Doña Lupe para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"El Mero Sinaloense Marisquería","ciudad":"Celaya, Guanajuato","giro":"Mariscos estilo Sinaloa (aguachiles, ceviches, camarones), producto 100% sinaloense","why":"Nicho exacto del prospecto ideal: mariscos sinaloenses, concepto muy 'instagrameable' que mueve clientela por antojo. FB propio activo y ficha en directorios, sin web. Celaya, cerca. Un menú y galería en web le vendría directo. Confirmar actividad reciente del FB antes de abordar.","web":"SIN WEB (solo redes)","conf":"media","tel":"","fb":"facebook.com/merosinaloense","ig":"","tiktok":"","platillo":"sus mariscos","fuente":"nicelocal.com.mx/celaya/restaurants/mariscos_el_mero_sinaloense","waText":"¡Qué tal, El Mero Sinaloense Marisquería! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de El Mero Sinaloense Marisquería para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas Rodrigo","ciudad":"Salamanca, Guanajuato","giro":"Carnitas de cerdo (comida de rancho tradicional)","why":"Carnitas muy conocidas en Salamanca, ~4.3/5, presencia en muchos directorios y en Rappi (le entra bastante gente). Teléfono claro. Salamanca a ~40 min. Perfil tradicional accionable; solo FB y fichas de terceros, sin dominio propio.","web":"SIN WEB (solo redes)","conf":"media","tel":"4641211714","fb":"facebook.com/carnitasrodrigo","ig":"","tiktok":"","platillo":"sus carnitas","fuente":"facebook.com/carnitasrodrigo","waText":"¡Qué tal, Carnitas Rodrigo! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas Rodrigo para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Tostadas y Mariscos 'Beto'","ciudad":"Irapuato, Guanajuato","giro":"Tostadas y mariscos / pescadería-marisquería","why":"Negocio establecido desde 2010, FB activo donde presume 'nuevas instalaciones' (buen momento: acaban de invertir, están receptivos a mejorar imagen). Dirección y teléfono públicos en varios directorios. Irapuato a ~50 min. Mariscos = giro fotografiable.","web":"SIN WEB (solo redes)","conf":"media","tel":"4626261777","fb":"facebook.com/tostadasymaricosbeto","ig":"","tiktok":"","platillo":"sus mariscos","fuente":"facebook.com/tostadasymaricosbeto","waText":"¡Qué tal, Tostadas y Mariscos Beto! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Tostadas y Mariscos Beto para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas El Chino","ciudad":"Celaya, Guanajuato","giro":"Carnitas de puerco (cocina de rancho / taquería familiar)","why":"Carnitas familiares clásicas 'de rancho' con clientela local fiel y buenas reseñas por sabor y precio. FB propio, sin web. Celaya, cerca. Negocio de barrio accionable con dirección conocida. Falta teléfono directo: conseguirlo por DM o en persona.","web":"SIN WEB (solo redes)","conf":"media","tel":"","fb":"facebook.com/carnitaselchinocelaya","ig":"","tiktok":"","platillo":"sus carnitas","fuente":"facebook.com/carnitaselchinocelaya","waText":"¡Qué tal, Carnitas El Chino! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas El Chino para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas La Gorda 2","ciudad":"Celaya, Guanajuato","giro":"Carnitas, tortas, gorditas (cocina económica / antojitos)","why":"Cocina económica popular con FB activo y varias sucursales/menciones. Teléfono y dirección = muy accionable. Celaya, cerca. Ideal para un sitio sencillo con menú y ubicación. Tener varias sucursales indica que crecen y podrían querer imagen unificada.","web":"SIN WEB (solo redes)","conf":"media","tel":"4616123163","fb":"facebook.com/CanitaslaGorda2","ig":"","tiktok":"","platillo":"sus carnitas","fuente":"planetamexico.com.mx/carnitas-la-gorda-F170EC3051B","waText":"¡Qué tal, Carnitas La Gorda 2! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas La Gorda 2 para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"El Mochis","ciudad":"Irapuato, Guanajuato","giro":"Mariscos estilo Sinaloa (Los Mochis)","why":"Nicho exacto: mariscos estilo Sinaloa sin web. Servicio a domicilio en toda la ciudad, activo en FB y en Rappi (ya venden a distancia, entienden el online). Irapuato a ~50 min. Falta teléfono directo: conseguirlo por DM.","web":"SIN WEB (solo redes)","conf":"media","tel":"","fb":"facebook.com/people/El-Mochis/61557070405207","ig":"","tiktok":"","platillo":"sus mariscos","fuente":"facebook.com/people/El-Mochis/61557070405207","waText":"¡Qué tal, El Mochis! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de El Mochis para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Comida Mexicana 'Las Tías'","ciudad":"León, Guanajuato","giro":"Fonda / comida corrida casera: desayunos y almuerzos mexicanos","why":"Fonda de barrio con base sólida: ~3,512 likes en FB, y aparece en Rappi, DiDi Food y RestaurantGuru. Precios accesibles, buenos comentarios. Tiene correo Y teléfono = súper accionable (poco común en fondas). Perfil clásico 'solo redes'. León a ~1.5 h.","web":"SIN WEB (solo redes)","conf":"media","tel":"5587940174","fb":"","ig":"","tiktok":"","platillo":"su comida casera","fuente":"facebook.com/lastiascomidamexicana","waText":"¡Qué tal, Comida Mexicana Las Tías! 🙌 Soy Miguel, de aquí de la región. Soy fan de su comida casera y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Comida Mexicana Las Tías para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"La Santa Birria","ciudad":"León, Guanajuato","giro":"Birria de res (tacos, tortas y quesadillas)","why":"Birriería de barrio activa en redes (IG @lasantabirrialeon con fotos/videos, FB propio) con reparto por Uber Eats y Rappi. Encaja en la tendencia birria viral de León. Ya en apps de delivery = receptivos a estar en línea. León a ~1.5 h. Falta teléfono: conseguirlo por DM.","web":"SIN WEB (solo redes)","conf":"media","tel":"","fb":"facebook.com/Santabirrialeon","ig":"lasantabirrialeon","tiktok":"","platillo":"su birria","fuente":"instagram.com/lasantabirrialeon","waText":"¡Qué tal, La Santa Birria! 🙌 Soy Miguel, de aquí de la región. Soy fan de su birria y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de La Santa Birria para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Fonda María Isabel Comida Típica Mexicana","ciudad":"Guanajuato capital, Guanajuato","giro":"Comida típica de fonda: enchiladas mineras, menudo, pozole, champurrado con tamales","why":"Fonda tradicional con FB propio (~292 likes) y calificaciones altas (5 en comida, servicio y ambiente). Comida casera regional en la capital turística. Perfil 'solo redes'. La zona turística de Guanajuato favorece que una web con menú capte comensales que buscan antes de llegar.","web":"SIN WEB (solo redes)","conf":"media","tel":"","fb":"facebook.com/people/Fonda-Maria-Isabel-Comida-Tipica-Mexicana/100063557101946","ig":"","tiktok":"","platillo":"sus enchiladas mineras","fuente":"facebook.com/people/Fonda-Maria-Isabel-Comida-Tipica-Mexicana/100063557101946","waText":"¡Qué tal, Fonda María Isabel Comida Típica Mexicana! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus enchiladas mineras y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Fonda María Isabel Comida Típica Mexicana para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"El Borrego de Oro Celaya","ciudad":"Celaya, Guanajuato","giro":"Barbacoa de borrego estilo Hidalgo (sábado y domingo)","why":"Barbacoa dominguera 'de rancho' clásica de antojo. FB propio, sin web. Celaya, cerca. Un sitio con pedidos por kilo/WhatsApp para fin de semana le caería perfecto. OJO: confianza baja porque su presencia se ve delgada; verificar en persona que el negocio siga activo y consíguele teléfono.","web":"SIN WEB (solo redes)","conf":"baja","tel":"","fb":"facebook.com/p/El-Borrego-de-Oro-Celaya-100063657169857","ig":"","tiktok":"","platillo":"su barbacoa","fuente":"facebook.com/p/El-Borrego-de-Oro-Celaya-100063657169857","waText":"¡Qué tal, El Borrego de Oro Celaya! 🙌 Soy Miguel, de aquí de la región. Soy fan de su barbacoa y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de El Borrego de Oro Celaya para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Birria 'Los Inges'","ciudad":"Cortázar, Guanajuato","giro":"Quesabirria / birria","why":"Está en tu ciudad (Cortázar): visita en persona sin costo. Se anuncia como 'las mejores quesabirrias de la región', giro antojable de rancho que trabaja solo por FB. Buen prospecto para sitio + menú en línea. Confianza baja porque los datos son delgados: verifica en persona que siga abierto y consíguele contacto directo.","web":"SIN WEB (solo redes)","conf":"baja","tel":"","fb":"facebook.com/people/Birria-Los-Inges/100077423414742","ig":"","tiktok":"","platillo":"su birria","fuente":"facebook.com/people/Birria-Los-Inges/100077423414742","waText":"¡Qué tal, Birria Los Inges! 🙌 Soy Miguel, de aquí de la región. Soy fan de su birria y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Birria Los Inges para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Birria Xalisco","ciudad":"Celaya, Guanajuato","giro":"Birria de res estilo Jalisco, quesabirria, tacos dorados, chilaquiles","why":"Birriería popular (FB ~2,065 likes, 643 check-ins, 4.8 de rating) y activa en delivery. Celaya, cerca. ADVERTENCIA IMPORTANTE: YA tiene página de pedidos (birriaxalisco.marketlocal.site, plantilla gratuita/subdominio genérico). NO es un 'sin web' puro. Tu pitch aquí NO es 'no tienes nada', sino 'tienes algo genérico y compartido; te consigo dominio propio (birriaxalisco.com) y un sitio que se ve profesional y es tuyo'. Por eso queda abajo: la objeción 'ya tengo página' es más difícil.","web":"TIENE WEB PARCIAL (subdominio genérico de pedidos, no dominio propio)","conf":"media","tel":"4612154280","fb":"facebook.com/birriaxalisco","ig":"","tiktok":"","platillo":"su birria","fuente":"birriaxalisco.marketlocal.site","waText":"¡Qué tal, Birria Xalisco! 🙌 Soy Miguel, de aquí de la región. Soy fan de su birria y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Birria Xalisco para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"La Sinaloense (SJR)","ciudad":"San Juan del Río, Querétaro","giro":"Mariscos estilo Sinaloa (ceviche, aguachile, molcajetes, camarón)","why":"Marisquería sinaloense activa en Instagram y con contenido de foodies en TikTok. Ambiente familiar, estacionamiento. Solo tiene página de menú auto-generada (res-menu.net), no sitio propio: perfecto para vender web propia. SJR a ~1 h desde Cortázar (camino a Querétaro). Nicho ideal de mariscos.","web":"SIN WEB (menú en subdominio compartido)","conf":"media","tel":"","fb":"facebook.com/lasinaloense.sjr","ig":"mariscos_lasinaloense","tiktok":"","platillo":"sus mariscos","fuente":"facebook.com/lasinaloense.sjr","waText":"¡Qué tal, La Sinaloense! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de La Sinaloense para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Barbacoa El Borrego de Hércules","ciudad":"Santiago de Querétaro, Querétaro","giro":"Barbacoa de borrego de hoyo, consomé, tacos (comida de rancho)","why":"Barbacoa muy elogiada (tortillas a mano, salsas, consomé), aparece en contenido viral de TikTok de foodies. Solo FB, sin web: prospecto clásico de fin de semana con pedidos por WhatsApp. Querétaro a ~1 h. Teléfono claro.","web":"SIN WEB (solo redes)","conf":"media","tel":"4424234996","fb":"facebook.com/Barbacoaelborregodehercules","ig":"","tiktok":"","platillo":"su barbacoa","fuente":"restaurantguru.com/Barbacoa-el-borrego-de-Hercules-Santiago-de-Queretaro","waText":"¡Qué tal, Barbacoa El Borrego de Hércules! 🙌 Soy Miguel, de aquí de la región. Soy fan de su barbacoa y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Barbacoa El Borrego de Hércules para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Barbacoa Bárcenas 'El Gordo'","ciudad":"Santiago de Querétaro, Querétaro","giro":"Barbacoa 100% de borrego, tacos (48 años de tradición)","why":"Marca reconocida con 48+ años y receta propia, activa en redes y en Uber Eats/Rappi (ya en apps). Varias sucursales. Muy accionable. Querétaro a ~1 h. La tradición + varias sucursales = candidato para imagen de marca unificada.","web":"SIN WEB (solo redes)","conf":"media","tel":"","fb":"facebook.com/barbacoabarcenaselgordo","ig":"","tiktok":"","platillo":"su barbacoa","fuente":"horario.mx/0721166/Barbacoa_Barcenas_-_el_gordo","waText":"¡Qué tal, Barbacoa Bárcenas El Gordo! 🙌 Soy Miguel, de aquí de la región. Soy fan de su barbacoa y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Barbacoa Bárcenas El Gordo para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Mariscos Reyes por El Dani","ciudad":"Irapuato, Guanajuato","giro":"Mariscos estilo Sinaloa (aguachile, tostadas)","why":"Marisquería estilo Sinaloa activa en TikTok e IG (~814 seguidores) con reseñas de aguachile 'exquisito'. Reciente cambio de local (Blvd. Los Reyes 688): momento ideal para estrenar web junto con local nuevo. Irapuato a ~50 min. Nicho objetivo. Confirmar actividad reciente.","web":"SIN WEB (solo redes)","conf":"media","tel":"","fb":"","ig":"mariscosreyesxeldani.irapuato","tiktok":"rese","platillo":"sus mariscos","fuente":"tiktok.com/@jddlv.wero/video/7578279834833620244","waText":"¡Qué tal, Mariscos Reyes por El Dani! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus mariscos y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Mariscos Reyes por El Dani para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"An'ca Carmen","ciudad":"Guanajuato capital, Guanajuato","giro":"Cocina mexicana tradicional / desayunos: enchiladas mineras, chilaquiles, flautas, tetelas, tlacoyos","why":"Fonda familiar del Centro muy querida por locales, 4.3 en Google, buenas reseñas en Tripadvisor, cerca de la Basílica. Aparece en Uber Eats. Perfil clásico de tradicional sin web en zona turística (bueno para captar turistas por Google). Confianza media: no hay teléfono ni FB claros, solo agregadores; hay que conseguir el contacto directo.","web":"SIN WEB (solo Google/apps)","conf":"media","tel":"","fb":"","ig":"","tiktok":"","platillo":"sus enchiladas mineras","fuente":"tripadvisor.com An'ca Carmen Guanajuato","waText":"¡Qué tal, Anca Carmen! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus enchiladas mineras y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Anca Carmen para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Fonda las Cazuelas con Fina","ciudad":"Guanajuato capital, Guanajuato","giro":"Cocina tradicional de fonda: enchiladas mineras, barbacoa, pozole","why":"Fonda dentro del Mercado Hidalgo (punto turístico icónico) con mucho tránsito y reseñas positivas. Prospecto 'de fonda' por excelencia; solo aparece en agregadores de menú, sin dominio propio. Teléfono disponible. La ubicación turística ayuda al pitch de web con menú/fotos.","web":"SIN WEB (solo agregadores)","conf":"media","tel":"4737373219","fb":"","ig":"","tiktok":"","platillo":"su barbacoa","fuente":"fonda-las-cazuelas-con-fina.res-menu.net","waText":"¡Qué tal, Fonda las Cazuelas con Fina! 🙌 Soy Miguel, de aquí de la región. Soy fan de su barbacoa y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Fonda las Cazuelas con Fina para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Carnitas Don Kuino","ciudad":"Corregidora (zona metropolitana Querétaro), Querétaro","giro":"Carnitas y cenaduría (estilo casero/de rancho)","why":"Buenas reseñas por sabor casero (gorditas de migaja con carnitas). Negocio familiar con cazo, sin web, típico prospecto tradicional. Tiene página hermana ('Don Kuino El Mirador') = crecen, podrían querer imagen. Corregidora/Querétaro a ~1 h. Teléfono claro.","web":"SIN WEB (solo redes)","conf":"media","tel":"4422633936","fb":"facebook.com/Carnitasdonkuino","ig":"","tiktok":"","platillo":"sus carnitas","fuente":"tripadvisor.com Carnitas Don Kuino Corregidora","waText":"¡Qué tal, Carnitas Don Kuino! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus carnitas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Carnitas Don Kuino para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Tortas Yola","ciudad":"Santiago de Querétaro (Col. Las Palmas), Querétaro","giro":"Tortas y tacos (fonda/lonchería popular)","why":"Recomendadísima en redes: contenido viral de foodies queretanos en TikTok/Threads, fama de venderse rápido. Negocio chico con clientela fiel, sin web. Teléfono claro. Querétaro a ~1 h. Negocio pequeño = decisión más rápida, pero también presupuesto más ajustado (ajusta precio amigo).","web":"SIN WEB (solo redes)","conf":"alta","tel":"4424241201","fb":"facebook.com/tortasyolaqro","ig":"","tiktok":"","platillo":"sus tortas","fuente":"mexicoo.mx/tortas-yola-3550713","waText":"¡Qué tal, Tortas Yola! 🙌 Soy Miguel, de aquí de la región. Soy fan de sus tortas y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Tortas Yola para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Barbacoa El Amigo Chon","ciudad":"León, Guanajuato","giro":"Barbacoa de borrego estilo Hidalgo","why":"Barbacoa tradicional desde 1984 con varias sucursales en León, mencionada por foodies en TikTok. Comida de rancho de fin de semana, muy reseñada, sin web. Teléfono claro. Varias sucursales = candidato a imagen de marca. León a ~1.5 h.","web":"SIN WEB (solo redes + agregadores)","conf":"media","tel":"4777725827","fb":"facebook.com/elamigochon","ig":"","tiktok":"","platillo":"su barbacoa","fuente":"tiktok.com/@soyeldiegotorres/video/7380790259279301894","waText":"¡Qué tal, Barbacoa El Amigo Chon! 🙌 Soy Miguel, de aquí de la región. Soy fan de su barbacoa y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Barbacoa El Amigo Chon para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Fonda San Pedro","ciudad":"El Marqués, Querétaro","giro":"Fonda: comida corrida, tacos, gorditas y barbacoa (cocina económica casera)","why":"Fonda de comida corrida en El Marqués (zona Querétaro), perfil económico-tradicional. Solo FB, sin web: prospecto típico para página sencilla con menú del día. Confianza baja: no hay teléfono ni ficha robusta de Google; verificar en persona/DM que siga activo y conseguir contacto.","web":"SIN WEB (solo redes)","conf":"baja","tel":"","fb":"facebook.com/comidacorridaytacos","ig":"","tiktok":"","platillo":"su barbacoa","fuente":"facebook.com/comidacorridaytacos","waText":"¡Qué tal, Fonda San Pedro! 🙌 Soy Miguel, de aquí de la región. Soy fan de su barbacoa y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Fonda San Pedro para que lo vean, sin compromiso. ¿Se los mando? 🌮"},{"nombre":"Barbacoa Cortazar","ciudad":"Cortázar, Guanajuato","giro":"Barbacoa (comida de rancho)","why":"Está en tu ciudad: visita gratis. Encaja en el perfil de comida de rancho sin web. Confianza baja: es pequeño (~153 likes, 3 check-ins) y el dato es dudoso; puede ser un puesto informal. Trátalo como levantar una landing sencilla y de bajo costo. Verifica en persona que exista y opere.","web":"SIN WEB (solo redes)","conf":"baja","tel":"","fb":"facebook.com/people/Barbacoa-Cortazar/100076507234608","ig":"","tiktok":"","platillo":"su barbacoa","fuente":"facebook.com/people/Barbacoa-Cortazar/100076507234608","waText":"¡Qué tal, Barbacoa Cortazar! 🙌 Soy Miguel, de aquí de la región. Soy fan de su barbacoa y los sigo en redes. Vi que aún no tienen su propia página web y les armé un demo con el nombre de Barbacoa Cortazar para que lo vean, sin compromiso. ¿Se los mando? 🌮"}];
+const $=(s,c)=>(c||document).querySelector(s), $$=(s,c)=>Array.from((c||document).querySelectorAll(s));
+const KEY="prospectos_contactados_v1";
+let done={}; try{done=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){done={}}
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+const state={ciudad:new Set(),conf:new Set(),q:"",hideDone:false};
+
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1900)}
+
+function socHref(p){return p.fb?("https://"+p.fb.replace(/^https?:\/\//,"")):""}
+
+function card(p){
+  const id=slug(p.nombre);
+  const el=document.createElement("article");
+  el.className="card"+(done[id]?" is-done":"");
+  el.dataset.id=id; el.dataset.ciudad=p.ciudad; el.dataset.conf=p.conf;
+  el.dataset.txt=(p.nombre+" "+p.ciudad+" "+p.giro+" "+p.platillo).toLowerCase();
+  const acts=[];
+  if(p.tel) acts.push(`<a class="act wa" target="_blank" rel="noopener" href="https://wa.me/52${p.tel}?text=${encodeURIComponent(p.waText)}">💬 WhatsApp</a>`);
+  if(p.tel) acts.push(`<a class="act call" href="tel:+52${p.tel}">📞 Llamar</a>`);
+  const fb=socHref(p);
+  if(fb) acts.push(`<a class="act soc" target="_blank" rel="noopener" href="${fb}">Facebook</a>`);
+  if(p.ig) acts.push(`<a class="act soc" target="_blank" rel="noopener" href="https://instagram.com/${p.ig}">Instagram</a>`);
+  if(p.tiktok) acts.push(`<a class="act soc" target="_blank" rel="noopener" href="https://tiktok.com/@${p.tiktok}">TikTok</a>`);
+  acts.push(`<button class="act copy" type="button">📋 Copiar msg</button>`);
+  el.innerHTML=`
+    <div class="card-top"><h2 class="name">${p.nombre}</h2><span class="pill ${p.conf}">${p.conf}</span></div>
+    <p class="meta">${p.ciudad}<span class="dot">•</span><span class="giro">${p.giro}</span></p>
+    <p class="why">${p.why}</p>
+    <span class="web${/PARCIAL|parcial|subdominio/.test(p.web)?" partial":""}">${p.web}</span>
+    <div class="acts">${acts.join("")}</div>
+    <div class="foot">
+      <label class="done"><input type="checkbox" ${done[id]?"checked":""}> Ya contacté</label>
+      ${p.fuente?`<a class="src" target="_blank" rel="noopener" href="https://${p.fuente.replace(/^https?:\/\//,"")}" title="${p.fuente}">fuente ↗</a>`:""}
+    </div>`;
+  $(".copy",el).addEventListener("click",()=>{navigator.clipboard.writeText(p.waText).then(()=>toast("📋 Mensaje copiado — pégalo en su DM"),()=>toast("Copia manual: "+p.waText.slice(0,40)+"…"))});
+  $(".done input",el).addEventListener("change",e=>{
+    done[id]=e.target.checked; if(!done[id])delete done[id];
+    localStorage.setItem(KEY,JSON.stringify(done));
+    el.classList.toggle("is-done",e.target.checked); render();
+  });
+  return el;
+}
+
+function buildCiudades(){
+  const cont=$("#ciudades");
+  const orden=[]; DATA.forEach(p=>{const c=p.ciudad.split(",")[0].trim(); if(!orden.includes(c))orden.push(c)});
+  orden.forEach(c=>{const b=document.createElement("button");b.className="chip";b.dataset.ciudad=c;b.textContent=c;
+    b.addEventListener("click",()=>{b.classList.toggle("on");state.ciudad.has(c)?state.ciudad.delete(c):state.ciudad.add(c);render()});
+    cont.appendChild(b)});
+}
+
+const cards=DATA.map(card);
+function render(){
+  let vis=0, total=DATA.length, ndone=Object.keys(done).length;
+  cards.forEach((el,i)=>{
+    const p=DATA[i], c=p.ciudad.split(",")[0].trim();
+    let ok=true;
+    if(state.ciudad.size && !state.ciudad.has(c)) ok=false;
+    if(state.conf.size && !state.conf.has(p.conf)) ok=false;
+    if(state.q && el.dataset.txt.indexOf(state.q)<0) ok=false;
+    if(state.hideDone && done[slug(p.nombre)]) ok=false;
+    el.style.display=ok?"":"none"; if(ok)vis++;
+  });
+  $("#empty").style.display=vis?"none":"block";
+  $("#s-total").textContent=total;
+  $("#s-done").textContent=ndone;
+  $("#s-todo").textContent=total-ndone;
+  $("#prog").style.width=(total?ndone/total*100:0)+"%";
+}
+
+const grid=$("#grid"); cards.forEach(c=>grid.appendChild(c));
+buildCiudades();
+$("#q").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase();render()});
+$$("#confs .chip").forEach(b=>b.addEventListener("click",()=>{b.classList.toggle("on");const k=b.dataset.conf;state.conf.has(k)?state.conf.delete(k):state.conf.add(k);render()}));
+$("#hideDone").addEventListener("change",e=>{state.hideDone=e.target.checked;render()});
+render();
+</script>
+
+</body>
+</html>
